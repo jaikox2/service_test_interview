@@ -1,3 +1,4 @@
+const { timeNow } = require('../..');
 const db = require('../../../conf/database');
 
 const insertProductSQL = `INSERT INTO products(name, code, price, detail)
@@ -27,7 +28,27 @@ function selectProducts() {
   })
 }
 
+const updateProductsSQL = `UPDATE products
+SET name = $2,
+  code = $3,
+  price = $4,
+  detail = $5,
+  "updatedAt" = $6
+WHERE id = $1`;
+
+function updateProducts(id, name, code, price, detail) {
+  return new Promise((resolve, reject) => {
+    db.query(updateProductsSQL, [id, name, code, price, detail, timeNow()])
+      .then((result) => {
+        resolve(result.rows);
+      }).catch((err) => {
+        reject(err);
+      });
+  })
+}
+
 module.exports = {
   insertProduct,
-  selectProducts
+  selectProducts,
+  updateProducts
 }
