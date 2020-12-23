@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 3000;
 // router
 const idxRoute = require('./router/index');
 const authRoute = require('./router/authorization');
+const productRoute = require('./router/product');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -18,6 +19,7 @@ app.use(logger('dev'));
 
 app.use('/api', idxRoute);
 app.use('/api', authRoute);
+app.use('/api/products', productRoute);
 
 
 app.use((err, req, res, next) => {
