@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { createProduct, findProducts, updateProduct } = require('../service/handler/products');
+const { createProduct, findProducts, updateProduct, deleteProduct } = require('../service/handler/products');
 const middleware = require('../service/middleware/authorization');
 
 router.get('/', middleware(), async (req, res, next) => {
@@ -60,9 +60,19 @@ router.put('/', middleware(), async (req, res, next) => {
   }
 })
 
-router.delete('/', (req, res, next) => {
+router.delete('/:id', middleware(), async (req, res, next) => {
   try {
-    
+    const {
+      id,
+    } = req.params;
+
+    const { success, error } = await deleteProduct(id);
+
+    if (!success) {
+      return next(error);
+    }
+
+    return res.status(200).send({ message: 'success'});
   } catch (error) {
     return next(error);
   }

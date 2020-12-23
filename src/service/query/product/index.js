@@ -47,8 +47,22 @@ function updateProducts(id, name, code, price, detail) {
   })
 }
 
+const deleteProductsSQL = `DELETE FROM products WHERE id = $1`;
+
+function deleteProducts(id) {
+  return new Promise((resolve, reject) => {
+    db.query(deleteProductsSQL, [id])
+      .then((result) => {
+        resolve(result.rows);
+      }).catch((err) => {
+        reject(err);
+      });
+  })
+}
+
 module.exports = {
   insertProduct,
   selectProducts,
-  updateProducts
+  updateProducts,
+  deleteProducts
 }

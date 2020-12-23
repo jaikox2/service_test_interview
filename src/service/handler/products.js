@@ -1,4 +1,4 @@
-const { insertProduct, selectProducts, updateProducts } = require("../query/product");
+const { insertProduct, selectProducts, updateProducts, deleteProducts } = require("../query/product");
 
 
 async function createProduct(name, code, price, detail) {
@@ -55,8 +55,27 @@ async function updateProduct(id, name, code, price, detail) {
   }
 }
 
+async function deleteProduct(id) {
+  try {
+    var result = {
+      success: true,
+      data: null,
+      error: null
+    }
+
+    await deleteProducts(id);
+
+    return result;
+  } catch (error) {
+    result.success = false;
+    result.error = error;
+    return result;
+  }
+}
+
 module.exports = {
   createProduct,
   findProducts,
-  updateProduct
+  updateProduct,
+  deleteProduct
 }
