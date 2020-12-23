@@ -17,3 +17,14 @@ CREATE TABLE users (
     "updatedAt" timestamp with time zone NOT NULL DEFAULT NOW(),
     PRIMARY KEY (id)
 );
+
+-- product
+CREATE TABLE products (
+    id SERIAL PRIMARY KEY,
+    name character varying(255) NOT NULL UNIQUE,
+    code character varying(20) NOT NULL,
+    price numeric(10, 2) NOT NULL,
+    detail text,
+    "createdAt" timestamp with time zone NOT NULL DEFAULT NOW(),
+    "updatedAt" timestamp with time zone NOT NULL DEFAULT NOW()
+);
