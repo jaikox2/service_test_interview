@@ -1,11 +1,18 @@
-const { createProduct } = require('../service/handler/products');
+const { createProduct, findProducts } = require('../service/handler/products');
 const middleware = require('../service/middleware/authorization');
 
 const router = require('express').Router();
 
-router.get('/', (req, res, next) => {
+router.get('/', middleware(), async (req, res, next) => {
   try {
-    
+
+    const { success, data, error } = await findProducts();
+
+    if (!success) {
+      return next(error);
+    }
+
+    return res.status(200).send({ message: 'success', data });
   } catch (error) {
     return next(error);
   }
