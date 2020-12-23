@@ -14,6 +14,23 @@ function craeteUser(username, password, name, surname) {
   })
 }
 
+
+const findUserByUsernameSQL = `SELECT * 
+FROM users
+WHERE username = $1`;
+
+function findUserByUsername(username) {
+  return new Promise((resolve, reject) => {
+    db.query(findUserByUsernameSQL, [username])
+      .then((result) => {
+        resolve(result.rows);
+      }).catch((err) => {
+        reject(err);
+      });
+  })
+}
+
 module.exports = {
   craeteUser,
+  findUserByUsername,
 };
