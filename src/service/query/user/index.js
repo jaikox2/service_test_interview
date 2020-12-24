@@ -32,14 +32,51 @@ function findUserByUsername(username) {
 }
 
 
-const updateUserActiveSQL = `UPDATE users
-SET "isActived" = $2,
-  "updatedAt" = $3
-WHERE id = $1`;
+const insertUserActiveSQL = `INSERT INTO users_active(userid, token)
+VALUES($1, $2)`;
 
-function updateUserActive(id, status) {
+function insertUserActive(userid, token) {
   return new Promise((resolve, reject) => {
-    db.query(updateUserActiveSQL, [id, status, timeNow()])
+    db.query(insertUserActiveSQL, [userid, token])
+      .then((result) => {
+        resolve(result.rows);
+      }).catch((err) => {
+        reject(err);
+      });
+  })
+}
+
+const findUserActiveSQL = 'SELECT * FROM users_active WHERE userid = $1';
+
+function findUserActive(userid) {
+  return new Promise((resolve, reject) => {
+    db.query(findUserActiveSQL, [userid])
+      .then((result) => {
+        resolve(result.rows);
+      }).catch((err) => {
+        reject(err);
+      });
+  })
+}
+
+const deleteUserActivedSQL = `DELETE FROM users_active WHERE id = $1`;
+
+function deleteUserActived(id) {
+  return new Promise((resolve, reject) => {
+    db.query(deleteUserActivedSQL, [id])
+      .then((result) => {
+        resolve(result.rows);
+      }).catch((err) => {
+        reject(err);
+      });
+  })
+}
+
+const deleteUserActivedByTokenSQL = `DELETE FROM users_active WHERE token = $1`;
+
+function deleteUserActivedByToken(token) {
+  return new Promise((resolve, reject) => {
+    db.query(deleteUserActivedByTokenSQL, [token])
       .then((result) => {
         resolve(result.rows);
       }).catch((err) => {
@@ -51,5 +88,8 @@ function updateUserActive(id, status) {
 module.exports = {
   craeteUser,
   findUserByUsername,
-  updateUserActive,
+  insertUserActive,
+  findUserActive,
+  deleteUserActived,
+  deleteUserActivedByToken,
 };

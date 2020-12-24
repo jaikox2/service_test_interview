@@ -13,10 +13,18 @@ CREATE TABLE users (
     password text NOT NULL,
     name character varying(255) NOT NULL,
     surname character varying(255) NOT NULL,
-    "isActived" boolean NOT NULL DEFAULT false,
     "createdAt" timestamp with time zone NOT NULL DEFAULT NOW(),
     "updatedAt" timestamp with time zone NOT NULL DEFAULT NOW(),
     PRIMARY KEY (id)
+);
+
+-- user active
+CREATE TABLE users_active (
+    id SERIAL PRIMARY KEY,
+    userId uuid NOT NULL UNIQUE,
+    token text NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL DEFAULT NOW(),
+    "updatedAt" timestamp with time zone NOT NULL DEFAULT NOW()
 );
 
 -- product

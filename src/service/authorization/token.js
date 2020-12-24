@@ -17,7 +17,17 @@ function verifyToken(token) {
   });
 }
 
+async function verifyTokenHandler(token) {
+  try {
+    await verifyToken(token);
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
 module.exports = {
   genToken,
   verifyToken,
+  verifyTokenHandler,
 };
