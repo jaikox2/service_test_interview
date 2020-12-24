@@ -1,4 +1,4 @@
-const { findUserByUsername } = require("../query/user");
+const { findUserByUsername, updateUserActive } = require("../query/user");
 const { comparePassword } = require("../authorization/hash");
 const { genToken } = require('../authorization/token');
 
@@ -27,6 +27,16 @@ async function login(username, password) {
       result.error = new Error("invalid username and password");
       return result;
     }
+
+    // user active checker
+    if (user[0].isActived) {
+      result.success = false;
+      result.error = new Error("another device actived");
+      return result;
+    }
+
+    // user active this account
+    await updateUserActive(user[0].id, true);
 
     // get token
     const token = await genToken({ user_id: user[0].id });

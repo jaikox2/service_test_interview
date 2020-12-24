@@ -1,3 +1,4 @@
+const { timeNow } = require('../..');
 const db = require('../../../conf/database');
 
 const craeteUserSQL = `INSERT INTO users(username, password, name, surname)
@@ -30,7 +31,25 @@ function findUserByUsername(username) {
   })
 }
 
+
+const updateUserActiveSQL = `UPDATE users
+SET "isActived" = $2,
+  "updatedAt" = $3
+WHERE id = $1`;
+
+function updateUserActive(id, status) {
+  return new Promise((resolve, reject) => {
+    db.query(updateUserActiveSQL, [id, status, timeNow()])
+      .then((result) => {
+        resolve(result.rows);
+      }).catch((err) => {
+        reject(err);
+      });
+  })
+}
+
 module.exports = {
   craeteUser,
   findUserByUsername,
+  updateUserActive,
 };
