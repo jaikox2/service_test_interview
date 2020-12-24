@@ -1,5 +1,6 @@
 const login = require('../service/handler/login');
 const register = require('../service/handler/register');
+const { deleteUserActivedByToken } = require('../service/query/user');
 
 const router = require('express').Router()
 
@@ -16,9 +17,28 @@ router.post('/login', async (req, res, next) => {
       return next(error);
     }
 
-    res.status(200).send({ message: 'success', data})
+    return res.status(200).send({ message: 'success', data})
   } catch (error) {
-    next(error);
+    return next(error);
+  }
+})
+
+
+router.post('/logout', async (req, res, next) => {
+  try {
+    const {
+      access_token
+    } = req.body;
+
+    const resutl = await deleteUserActivedByToken(access_token);
+    if (resutl === 0) {
+      const err = new Error('Not Found To LOGOUT')
+      return next(err);
+    }
+
+    return res.status(200).send({ message: 'success'})
+  } catch (error) {
+    return next(error);
   }
 })
 

@@ -78,7 +78,7 @@ function deleteUserActivedByToken(token) {
   return new Promise((resolve, reject) => {
     db.query(deleteUserActivedByTokenSQL, [token])
       .then((result) => {
-        resolve(result.rows);
+        resolve(result.rowCount);
       }).catch((err) => {
         reject(err);
       });
